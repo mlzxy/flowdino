@@ -14,7 +14,7 @@ import dataset as dataset_util
 from dataset.metrics.iou import RunningIOU
 
 from network.utils import trainable_params
-from network.modules.probe import LinearProbe, ClusterProbe
+from network.probe import LinearProbe, ClusterProbe
 
 
 
@@ -76,7 +76,7 @@ def main(dataset="cocostuff", device="cuda:0", network="network.dino:default", s
 
             if s % 20 == 0:
                 scores = running_iou.compute()
-                tqdm.write(f"({s}) [probing] mean_iou = {scores['mean_iou']}, mean_acc = {scores['mean_acc']}", tqdm=True)
+                tqdm.write(f"({s}) [probing] mean_iou = {scores['mean_iou']}, mean_acc = {scores['mean_acc']}")
     
     semantic_probe.eval()
     running_iou = RunningIOU(num_classes, compute_hungarian=protocol == "cluster", has_background_at_0=False)

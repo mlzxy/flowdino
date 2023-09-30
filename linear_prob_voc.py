@@ -550,15 +550,15 @@ class CocoStuff(VisionDataset):
 
 # vit_small_8, vit_small_16
 # vit_base_8, vit_base_16
-def main(net=None, from_ckpt=None, save_ckpt='/filer/tmp1/xz653/tmp/ckpt', dataset="voc", num_workers=12,
-         input_size=448, mask_size=100, seed=-1, decay_rate=0.1, val_iters=8, drop_at=20, lr=0.01, max_epochs=25, num_samples=-1,
+def main(network=None, checkpoint=None, save_ckpt='./outputs', dataset="voc", num_workers=12,
+         input_size=320, mask_size=100, seed=-1, decay_rate=0.1, val_iters=8, drop_at=20, lr=0.01, max_epochs=25, num_samples=-1,
          batch_size=25, opt='sgd', scheduler='step'):
 
-    if 'vit_small' in net:
+    if 'vit_small' in network:
         embed_dim = 384
-    elif 'vit_base' in net:
+    elif 'vit_base' in network:
         embed_dim = 786
-    elif 'vit_large' in net:
+    elif 'vit_large' in network:
         embed_dim = 1024
     else:
         raise NotImplementedError()
@@ -593,8 +593,8 @@ def main(net=None, from_ckpt=None, save_ckpt='/filer/tmp1/xz653/tmp/ckpt', datas
     else:
         raise NotImplementedError
 
-    net_module, net_func = net.split(":")
-    feature_net = getattr(import_module(net_module), net_func)(checkpoint=from_ckpt)
+    net_module, net_func = network.split(":")
+    feature_net = getattr(import_module(net_module), net_func)(checkpoint=checkpoint)
     if isinstance(feature_net, tuple):
         feature_net, embed_dim = feature_net
 

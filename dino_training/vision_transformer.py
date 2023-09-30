@@ -164,10 +164,6 @@ class VisionTransformer(nn.Module):
             for i in range(depth)])
         self.norm = norm_layer(embed_dim)
 
-        if self.use_transhead:
-            self.optical_flow_head = Block(dim=embed_dim, num_heads=num_heads, mlp_ratio=1.0, qkv_bias=False, qk_scale=None,
-                drop=0, attn_drop=0, drop_path=0, norm_layer=norm_layer)
-
         # Classifier head
         self.head = nn.Linear(embed_dim, num_classes) if num_classes > 0 else nn.Identity()
 

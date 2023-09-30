@@ -89,23 +89,15 @@ def sanitize_state_dict(sd):
 
 
 
-def vit(checkpoint, use_transhead=False, patch_size=16, arch='base', ext=-1):
+def vit(checkpoint, patch_size=16, arch='base', ext=-1):
     model = vits.__dict__["vit_" + arch](patch_size=patch_size, num_classes=0, ext=ext)
     checkpoint = checkpoint or "/common/users/xz653/Workspace/nips2023/log/models/dino_vitbase16_pretrain.pth"
     print(f'load from checkpoint: {checkpoint}')
     states = torch.load(checkpoint)
-    if use_transhead:
-        teacher = states['teacher']
-        for k in states['student']:
-            if 'optical_flow_head' in k:
-                teacher[k] = states['student'][k]
-        states = teacher
-    else:
-        if 'teacher' in states: states = states['teacher']
-        if 'model' in states: states = states['model']
+    if 'teacher' in states: states = states['teacher']
+    if 'model' in states: states = states['model']
     state_dict = sanitize_state_dict(states)
-    if not use_transhead:
-        state_dict = {k: v for k,v in state_dict.items() if 'optical_flow_head' not in k}
+    state_dict = {k: v for k,v in state_dict.items() if 'optical_flow_head' not in k}
     
     model.load_state_dict(state_dict, strict=True)
     model = freeze_params(model)
