@@ -1,0 +1,12 @@
+joblib
+torchmetrics
+torch==1.12.1+cu113
+torchvision==0.13.1+cu113
+pytorch_lightning==1.7.7
+scipy
+fire
+pycocotools
+ujson
+einops
+albumentations
+jstyleson
